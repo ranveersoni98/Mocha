@@ -1,0 +1,38 @@
+{
+  "private": true,
+  "name": "mocha",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "devDependencies": {
+    "@types/react": "18.2.38",
+    "@types/react-dom": "^18",
+    "prettier": "^2.5.1",
+    "turbo": "^2.0.3"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "packageManager": "yarn@4.2.2",
+  "dependencies": {
+    "fastify": "^5.1.0",
+    "next": "^14.2.15",
+    "nextra": "^3.0.15",
+    "nextra-theme-docs": "^3.0.15",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "resolutions": {
+    "prosemirror-view@npm:^1.33.7": "patch:prosemirror-view@npm%3A1.38.1#~/.yarn/patches/prosemirror-view-npm-1.38.1-8cfb4ec84f.patch",
+    "prosemirror-view@npm:^1.27.0": "patch:prosemirror-view@npm%3A1.38.1#~/.yarn/patches/prosemirror-view-npm-1.38.1-8cfb4ec84f.patch",
+    "prosemirror-view@npm:^1.41.4": "patch:prosemirror-view@npm%3A1.38.1#~/.yarn/patches/prosemirror-view-npm-1.38.1-8cfb4ec84f.patch",
+    "prosemirror-view@npm:^1.37.0": "patch:prosemirror-view@npm%3A1.38.1#~/.yarn/patches/prosemirror-view-npm-1.38.1-8cfb4ec84f.patch",
+    "prosemirror-view@npm:^1.1.0": "patch:prosemirror-view@npm%3A1.38.1#~/.yarn/patches/prosemirror-view-npm-1.38.1-8cfb4ec84f.patch",
+    "prosemirror-view@npm:^1.0.0": "patch:prosemirror-view@npm%3A1.38.1#~/.yarn/patches/prosemirror-view-npm-1.38.1-8cfb4ec84f.patch",
+    "prosemirror-view@npm:^1.31.0": "patch:prosemirror-view@npm%3A1.38.1#~/.yarn/patches/prosemirror-view-npm-1.38.1-8cfb4ec84f.patch"
+  }
+}
