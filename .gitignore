@@ -15,7 +15,6 @@ coverage
 .next/
 out/
 build
-yarn.lock
 .yarn
 
 # misc
