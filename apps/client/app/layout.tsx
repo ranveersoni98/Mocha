@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 };
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { CommandPaletteProvider } from "@/components/providers/command-provider";
 
 export default function RootLayout({
   children,
@@ -39,12 +40,13 @@ export default function RootLayout({
             <SidebarProvider>
               <Sidebar />
               <SidebarInset className="bg-background">
-                <AppHeader />
-                <main className="flex-1 overflow-y-auto w-full">
-                  <div className="mx-auto w-full max-w-[1400px] p-6 lg:p-12">
-                    {children}
-                  </div>
-                </main>
+                <CommandPaletteProvider>
+                  <main className="flex-1 overflow-y-auto w-full">
+                    <div className="mx-auto w-full max-w-[1400px] p-6 lg:p-12">
+                      {children}
+                    </div>
+                  </main>
+                </CommandPaletteProvider>
               </SidebarInset>
             </SidebarProvider>
           </div>

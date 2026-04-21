@@ -1,17 +1,19 @@
 "use client";
 
-import { Plus } from "lucide-react";
+import { PiPlusDuotone } from "react-icons/pi";
+import { GoIssueOpened } from "react-icons/go";
 import Link from "next/link";
 import { PortalShell } from "@/components/portal/portal-shell";
 import { PortalTicketList } from "@/components/portal/portal-ticket-list";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { usePortalTickets } from "@/hooks/use-tickets";
 
 export default function PortalPage() {
@@ -20,45 +22,62 @@ export default function PortalPage() {
 
   return (
     <PortalShell>
-      <section className="grid gap-6 xl:grid-cols-[1.6fr_1fr] p-0 max-w-6xl">
-        <Card className="rounded-[2rem] border-border/60 bg-card/60 backdrop-blur-xl shadow-xs overflow-hidden">
-          <CardHeader className="bg-accent/20 border-b border-border/40 px-8 py-6">
-            <CardTitle className="text-xl">Open portal issues</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            <PortalTicketList
-              tickets={tickets.slice(0, 10)}
-              emptyLabel={
-                isLoading
-                  ? "Loading portal issues..."
-                  : "No open portal issues yet."
-              }
-            />
-          </CardContent>
-        </Card>
+      <TooltipProvider>
+        <div className="max-w-5xl space-y-6">
+          {/* Header */}
+          <div className="flex items-end justify-between gap-4">
+            <div className="space-y-0.5">
+              <h1 className="text-3xl font-bold tracking-tight">Portal</h1>
+              <p className="text-muted-foreground text-sm">
+                {isLoading
+                  ? "Loading…"
+                  : `${tickets.length} open issue${tickets.length === 1 ? "" : "s"}`}
+              </p>
+            </div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link href="/portal/new">
+                  <Button className="gap-2 rounded-full px-5 font-semibold">
+                    <PiPlusDuotone className="h-4 w-4" />
+                    New issue
+                  </Button>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>Submit a new portal issue</TooltipContent>
+            </Tooltip>
+          </div>
 
-        <Card className="rounded-[2rem] border-border/60 bg-card/60 backdrop-blur-xl shadow-xs overflow-hidden h-fit">
-          <CardHeader className="bg-accent/20 border-b border-border/40 px-8 py-6">
-            <CardTitle className="text-xl">Portal actions</CardTitle>
-            <CardDescription>Customer-facing issue tracking</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4 p-8 text-sm font-medium text-muted-foreground/90">
-            <p className="leading-relaxed">
-              Create and track external customer issues from the new client
-              shell seamlessly alongside internal ones.
-            </p>
-            <Link href="/portal/new" className="block w-full">
-              <Button
-                size="lg"
-                className="w-full gap-2 rounded-xl h-12 font-semibold shadow-sm"
-              >
-                <Plus className="h-4 w-4" />
-                New issue
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-      </section>
+          <Separator />
+
+          {/* Issues list */}
+          <div className="rounded-2xl border border-border/50 bg-card/60 overflow-hidden">
+            {/* Column header */}
+            <div className="flex items-center gap-3 border-b border-border/30 bg-accent/10 px-6 py-3">
+              <GoIssueOpened className="h-4 w-4 text-emerald-500" />
+              <span className="text-sm font-semibold">Open portal issues</span>
+            </div>
+
+            {isLoading ? (
+              <div className="divide-y divide-border/30">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="flex items-center gap-4 px-6 py-4">
+                    <Skeleton className="h-4 w-4 rounded" />
+                    <div className="flex-1 space-y-2">
+                      <Skeleton className="h-3.5 w-3/4 rounded" />
+                      <Skeleton className="h-2.5 w-1/3 rounded" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <PortalTicketList
+                tickets={tickets.slice(0, 10)}
+                emptyLabel="No open portal issues yet."
+              />
+            )}
+          </div>
+        </div>
+      </TooltipProvider>
     </PortalShell>
   );
 }

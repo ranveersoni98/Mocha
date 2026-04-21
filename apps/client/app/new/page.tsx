@@ -10,6 +10,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/lib/api";
 import { useSession } from "@/lib/store";
 
@@ -21,6 +31,12 @@ const ticketTypes = [
   "Maintenance",
   "Access",
   "Feedback",
+];
+
+const priorities = [
+  { value: "low", label: "Low" },
+  { value: "medium", label: "Medium" },
+  { value: "high", label: "High" },
 ];
 
 interface OptionRecord {
@@ -54,18 +70,14 @@ export default function NewTicketPage() {
           api<{ clients?: OptionRecord[] }>("/api/v1/clients/all"),
           api<{ users?: OptionRecord[] }>("/api/v1/users/all"),
         ]);
-
         setClients(clientsResponse.clients ?? []);
         setEngineers(usersResponse.users ?? []);
       } catch (error) {
         setStatus(
-          error instanceof Error
-            ? error.message
-            : "Failed to load ticket metadata.",
+          error instanceof Error ? error.message : "Failed to load ticket metadata.",
         );
       }
     };
-
     void load();
   }, []);
 
@@ -117,7 +129,7 @@ export default function NewTicketPage() {
 
       setStatus(
         response.success
-          ? "Ticket created."
+          ? "Ticket created successfully."
           : (response.error ?? "Ticket creation failed."),
       );
     } catch (error) {
@@ -130,137 +142,177 @@ export default function NewTicketPage() {
   };
 
   return (
-    <div className="p-6 lg:p-8">
-      <Card className="max-w-4xl">
-        <CardHeader>
-          <CardTitle>Create issue</CardTitle>
-          <CardDescription>
-            Migrated replacement for the legacy internal `/new` ticket flow.
+    <div className="flex flex-col gap-6 pb-10 max-w-4xl w-full">
+      {/* Header */}
+      <div className="space-y-1">
+        <h1 className="text-3xl font-bold tracking-tight text-white">
+          Create issue
+        </h1>
+        <p className="text-zinc-500 text-base">
+          Log a new issue and assign it to the right engineer.
+        </p>
+      </div>
+
+      <Card className="rounded-2xl border-white/5 bg-[#09090b] shadow-none overflow-hidden">
+        <CardHeader className="border-b border-white/5 bg-[#0a0a0c] px-6 py-5">
+          <CardTitle className="text-lg font-medium">Issue details</CardTitle>
+          <CardDescription className="text-zinc-500">
+            Fill in the contact info, assignment, and describe the problem.
           </CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-4 md:grid-cols-2">
-          <Field label="Contact name">
-            <input
+
+        <CardContent className="grid gap-6 md:grid-cols-2 p-6">
+          <Field label="Contact name" required>
+            <Input
+              id="new-name"
               value={form.name}
-              onChange={(event) =>
-                setForm((current) => ({ ...current, name: event.target.value }))
+              onChange={(e) =>
+                setForm((c) => ({ ...c, name: e.target.value }))
               }
-              className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none"
+              placeholder="Jane Smith"
+              className="h-11 rounded-xl bg-white/[0.04] border-white/10 text-white placeholder-zinc-600 focus-visible:ring-1 focus-visible:ring-violet-500/50"
             />
           </Field>
-          <Field label="Contact email">
-            <input
+
+          <Field label="Contact email" required>
+            <Input
+              id="new-email"
               type="email"
               value={form.email}
-              onChange={(event) =>
-                setForm((current) => ({
-                  ...current,
-                  email: event.target.value,
-                }))
+              onChange={(e) =>
+                setForm((c) => ({ ...c, email: e.target.value }))
               }
-              className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none"
+              placeholder="jane@company.com"
+              className="h-11 rounded-xl bg-white/[0.04] border-white/10 text-white placeholder-zinc-600 focus-visible:ring-1 focus-visible:ring-violet-500/50"
             />
           </Field>
+
           <Field label="Client">
-            <select
+            <Select
               value={form.company}
-              onChange={(event) =>
-                setForm((current) => ({
-                  ...current,
-                  company: event.target.value,
-                }))
-              }
-              className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none"
+              onValueChange={(v) => setForm((c) => ({ ...c, company: v }))}
             >
-              <option value="">Unassigned</option>
-              {clients.map((client) => (
-                <option key={client.id} value={client.id}>
-                  {client.name}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger
+                id="new-client"
+                className="h-11 rounded-xl bg-white/[0.04] border-white/10 text-zinc-300 focus:ring-1 focus:ring-violet-500/50"
+              >
+                <SelectValue placeholder="Unassigned" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="unassigned">Unassigned</SelectItem>
+                {clients.map((client) => (
+                  <SelectItem key={client.id} value={client.id}>
+                    {client.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </Field>
+
           <Field label="Engineer">
-            <select
+            <Select
               value={form.engineer}
-              onChange={(event) =>
-                setForm((current) => ({
-                  ...current,
-                  engineer: event.target.value,
-                }))
-              }
-              className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none"
+              onValueChange={(v) => setForm((c) => ({ ...c, engineer: v }))}
             >
-              <option value="">Unassigned</option>
-              {engineers.map((engineer) => (
-                <option key={engineer.id} value={engineer.id}>
-                  {engineer.name}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger
+                id="new-engineer"
+                className="h-11 rounded-xl bg-white/[0.04] border-white/10 text-zinc-300 focus:ring-1 focus:ring-violet-500/50"
+              >
+                <SelectValue placeholder="Unassigned" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="unassigned">Unassigned</SelectItem>
+                {engineers.map((engineer) => (
+                  <SelectItem key={engineer.id} value={engineer.id}>
+                    {engineer.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </Field>
+
           <Field label="Issue type">
-            <select
+            <Select
               value={form.type}
-              onChange={(event) =>
-                setForm((current) => ({ ...current, type: event.target.value }))
-              }
-              className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none"
+              onValueChange={(v) => setForm((c) => ({ ...c, type: v }))}
             >
-              {ticketTypes.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger
+                id="new-type"
+                className="h-11 rounded-xl bg-white/[0.04] border-white/10 text-zinc-300 focus:ring-1 focus:ring-violet-500/50"
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {ticketTypes.map((type) => (
+                  <SelectItem key={type} value={type}>
+                    {type}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </Field>
+
           <Field label="Priority">
-            <select
+            <Select
               value={form.priority}
-              onChange={(event) =>
-                setForm((current) => ({
-                  ...current,
-                  priority: event.target.value,
-                }))
-              }
-              className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none"
+              onValueChange={(v) => setForm((c) => ({ ...c, priority: v }))}
             >
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-            </select>
+              <SelectTrigger
+                id="new-priority"
+                className="h-11 rounded-xl bg-white/[0.04] border-white/10 text-zinc-300 focus:ring-1 focus:ring-violet-500/50"
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {priorities.map((p) => (
+                  <SelectItem key={p.value} value={p.value}>
+                    {p.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </Field>
+
           <div className="md:col-span-2 space-y-2">
-            <label className="text-sm font-medium">Title</label>
-            <input
+            <Label className="text-xs font-semibold uppercase tracking-widest text-zinc-500">
+              Title <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="new-title"
               value={form.title}
-              onChange={(event) =>
-                setForm((current) => ({
-                  ...current,
-                  title: event.target.value,
-                }))
+              onChange={(e) =>
+                setForm((c) => ({ ...c, title: e.target.value }))
               }
-              className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none"
+              placeholder="Brief one-line summary of the issue"
+              className="h-11 rounded-xl bg-white/[0.04] border-white/10 text-white placeholder-zinc-600 focus-visible:ring-1 focus-visible:ring-violet-500/50"
             />
           </div>
+
           <div className="md:col-span-2 space-y-2">
-            <label className="text-sm font-medium">Issue details</label>
-            <textarea
-              rows={8}
+            <Label className="text-xs font-semibold uppercase tracking-widest text-zinc-500">
+              Issue details <span className="text-red-500">*</span>
+            </Label>
+            <Textarea
+              id="new-detail"
+              rows={7}
               value={form.detail}
-              onChange={(event) =>
-                setForm((current) => ({
-                  ...current,
-                  detail: event.target.value,
-                }))
+              onChange={(e) =>
+                setForm((c) => ({ ...c, detail: e.target.value }))
               }
-              className="w-full rounded-2xl border border-border bg-background px-3 py-2 text-sm outline-none"
+              placeholder="Describe the issue in detail — steps to reproduce, expected behaviour, etc."
+              className="rounded-xl bg-white/[0.04] border-white/10 text-white placeholder-zinc-600 resize-none focus-visible:ring-1 focus-visible:ring-violet-500/50"
             />
           </div>
         </CardContent>
-        <CardFooter className="justify-between gap-3">
-          <p className="text-sm text-muted-foreground">{status}</p>
-          <Button onClick={() => void createTicket()} disabled={submitting}>
+
+        <CardFooter className="flex items-center justify-between gap-4 border-t border-white/5 bg-[#0a0a0c] px-6 py-4">
+          <p className="text-sm text-zinc-500">{status}</p>
+          <Button
+            id="new-submit"
+            onClick={() => void createTicket()}
+            disabled={submitting || !canSubmit}
+            className="rounded-full px-8 h-10 font-semibold bg-white text-black hover:bg-zinc-200 disabled:opacity-40"
+          >
             {submitting ? "Creating..." : "Create ticket"}
           </Button>
         </CardFooter>
@@ -271,14 +323,19 @@ export default function NewTicketPage() {
 
 function Field({
   label,
+  required,
   children,
 }: {
   label: string;
+  required?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <div className="space-y-2">
-      <label className="text-sm font-medium">{label}</label>
+      <Label className="text-xs font-semibold uppercase tracking-widest text-zinc-500">
+        {label}
+        {required && <span className="ml-1 text-red-500">*</span>}
+      </Label>
       {children}
     </div>
   );
