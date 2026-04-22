@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BrandMark } from "@/components/brand/brand-mark";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -17,12 +18,12 @@ export function PortalShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex flex-col gap-6 p-6 lg:p-8">
-      <div className="rounded-3xl border border-border bg-card p-5">
-        <div className="mb-4">
-          <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+      <div className="rounded-[28px] border border-white/[0.08] bg-[#09090b] p-5">
+        <div className="mb-4 flex items-center justify-between gap-4">
+          <BrandMark size={36} />
+          <p className="text-xs font-medium uppercase tracking-[0.2em] text-zinc-500">
             External Portal
           </p>
-          <h2 className="text-2xl font-semibold">Customer issue workspace</h2>
         </div>
         <div className="flex flex-wrap gap-2">
           {links.map((link) => {

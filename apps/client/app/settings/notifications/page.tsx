@@ -76,20 +76,20 @@ export default function NotificationSettingsPage() {
   };
 
   return (
-    <div className="p-6 lg:p-8">
-      <Card className="max-w-3xl">
-        <CardHeader>
-          <CardTitle>Notification preferences</CardTitle>
+    <div className="pb-10">
+      <Card className="max-w-3xl overflow-hidden rounded-[28px] border-white/[0.08] bg-[#09090b] shadow-[0_28px_80px_rgba(0,0,0,0.35)]">
+        <CardHeader className="border-b border-white/[0.08] bg-white/[0.02]">
+          <CardTitle className="text-white">Notification preferences</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 p-6">
           {items.map((item) => (
             <div
               key={item.key}
-              className="flex items-start justify-between gap-4 rounded-2xl border border-border bg-background px-4 py-4"
+              className="flex items-start justify-between gap-4 rounded-[24px] border border-white/[0.08] bg-white/[0.03] px-4 py-4"
             >
               <div>
-                <p className="font-medium">{item.title}</p>
-                <p className="text-sm text-muted-foreground">
+                <p className="font-medium text-white">{item.title}</p>
+                <p className="text-sm text-zinc-500">
                   {item.description}
                 </p>
               </div>
@@ -103,8 +103,8 @@ export default function NotificationSettingsPage() {
                     [item.key]: !current[item.key],
                   }))
                 }
-                className={`relative h-7 w-12 rounded-full transition-colors ${
-                  values[item.key] ? "bg-primary" : "bg-muted"
+              className={`relative h-7 w-12 rounded-full transition-colors ${
+                  values[item.key] ? "bg-violet-500" : "bg-white/10"
                 }`}
               >
                 <span
@@ -116,8 +116,10 @@ export default function NotificationSettingsPage() {
             </div>
           ))}
           <div className="flex items-center justify-between pt-2">
-            <p className="text-sm text-muted-foreground">{status}</p>
-            <Button onClick={() => void save()}>Save preferences</Button>
+            <p className="text-sm text-zinc-500">{status}</p>
+            <Button className="rounded-full bg-white text-black hover:bg-zinc-200" onClick={() => void save()}>
+              Save preferences
+            </Button>
           </div>
         </CardContent>
       </Card>

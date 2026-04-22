@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import {
   PiHouseDuotone,
@@ -13,6 +14,7 @@ import {
 import { GoIssueOpened } from "react-icons/go";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
+import { BrandMark } from "@/components/brand/brand-mark";
 import {
   Tooltip,
   TooltipContent,
@@ -22,7 +24,7 @@ import {
 
 const titles: Record<
   string,
-  { label: string; icon: React.ReactNode }
+  { label: string; icon: ReactNode }
 > = {
   "/": {
     label: "Dashboard",
@@ -99,9 +101,7 @@ export function AppHeader({ onOpenCommand }: { onOpenCommand?: () => void }) {
           <Separator orientation="vertical" className="h-4 bg-white/10 mx-0.5" />
 
           <div className="flex items-center gap-1.5">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-700">
-              Mocha
-            </span>
+            <BrandMark size={20} showWordmark={false} />
             {meta.icon && (
               <>
                 <span className="text-zinc-700 text-xs leading-none">›</span>

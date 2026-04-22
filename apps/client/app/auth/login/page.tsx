@@ -3,18 +3,18 @@
 import { setCookie } from "cookies-next";
 import {
   ArrowRight,
-  Coffee,
+  CircleDot,
   Eye,
   EyeOff,
   Lock,
   Mail,
-  CircleDot,
-  Zap,
   Shield,
+  Zap,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { BrandMark } from "@/components/brand/brand-mark";
 import { api } from "@/lib/api";
 
 const features = [
@@ -118,33 +118,26 @@ export default function LoginPage() {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:40px_40px]" />
 
         {/* Content */}
-        <div className="relative z-10 flex flex-1 flex-col justify-between p-12 xl:p-16">
+        <div className="relative z-10 flex flex-1 flex-col gap-16 p-12 pt-10 xl:p-16 xl:pt-12">
           {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 shadow-lg shadow-violet-500/40">
-              <Coffee className="h-5 w-5 text-white" strokeWidth={1.5} />
-            </div>
-            <span className="text-lg font-bold text-white tracking-tight">
-              Mocha
-            </span>
-          </div>
+          <BrandMark />
 
           {/* Hero text */}
-          <div className="space-y-8">
+          <div className="mt-10 space-y-8 xl:mt-16">
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-1.5 text-xs font-semibold text-violet-300 tracking-widest uppercase">
-                Issue management platform
+                Support command center
               </div>
               <h2 className="text-5xl xl:text-6xl font-bold tracking-tight text-white leading-[1.1]">
-                Support that
+                Keep every issue
                 <br />
                 <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
-                  moves fast.
+                  moving.
                 </span>
               </h2>
               <p className="text-lg text-zinc-400 leading-relaxed max-w-sm">
-                Triage, track and resolve customer issues with a team that's
-                always in sync.
+                Triage, track, and resolve customer issues without losing
+                context between teams.
               </p>
             </div>
 
@@ -164,10 +157,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Footer */}
-          <p className="text-xs text-zinc-700">
-            
-          </p>
         </div>
       </div>
 
@@ -179,25 +168,27 @@ export default function LoginPage() {
         <div className="relative z-10 w-full max-w-[400px] space-y-8">
           {/* Mobile logo */}
           <div className="flex items-center gap-3 lg:hidden">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600">
-              <Coffee className="h-4.5 w-4.5 text-white" strokeWidth={1.5} />
-            </div>
-            <span className="text-lg font-bold text-white">Mocha</span>
+            <BrandMark size={36} />
           </div>
 
           {/* Heading */}
-          <div className="space-y-1">
-            <h1 className="text-3xl font-bold tracking-tight text-white">
-              Welcome back
-            </h1>
-            <p className="text-zinc-500">Sign in to your workspace to continue.</p>
-          </div>
+            <div className="space-y-1">
+              <h1 className="text-3xl font-bold tracking-tight text-white">
+                Welcome back
+              </h1>
+              <p className="text-zinc-500">
+                Sign in to your workspace to continue.
+              </p>
+            </div>
 
           {/* Form */}
           <div className="space-y-5">
             {/* Email */}
             <div className="space-y-2">
-              <label className="text-xs font-semibold uppercase tracking-widest text-zinc-500">
+              <label
+                htmlFor="login-email"
+                className="text-xs font-semibold uppercase tracking-widest text-zinc-500"
+              >
                 Email
               </label>
               <div className="relative">
@@ -209,14 +200,17 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="h-13 w-full rounded-xl border border-white/8 bg-white/[0.05] pl-11 pr-4 py-3.5 text-sm text-white placeholder-zinc-600 outline-none transition-all focus:border-violet-500/50 focus:bg-white/[0.08] focus:ring-2 focus:ring-violet-500/15"
+                  className="h-13 w-full rounded-xl border border-white/[0.08] bg-white/[0.05] pl-11 pr-4 py-3.5 text-sm text-white placeholder-zinc-600 outline-none transition-all focus:border-violet-500/50 focus:bg-white/[0.08] focus:ring-2 focus:ring-violet-500/15"
                 />
               </div>
             </div>
 
             {/* Password */}
             <div className="space-y-2">
-              <label className="text-xs font-semibold uppercase tracking-widest text-zinc-500">
+              <label
+                htmlFor="login-password"
+                className="text-xs font-semibold uppercase tracking-widest text-zinc-500"
+              >
                 Password
               </label>
               <div className="relative">
@@ -231,7 +225,7 @@ export default function LoginPage() {
                   onKeyDown={(e) => {
                     if (e.key === "Enter") void handleLogin();
                   }}
-                  className="h-13 w-full rounded-xl border border-white/8 bg-white/[0.05] pl-11 pr-12 py-3.5 text-sm text-white placeholder-zinc-600 outline-none transition-all focus:border-violet-500/50 focus:bg-white/[0.08] focus:ring-2 focus:ring-violet-500/15"
+                  className="h-13 w-full rounded-xl border border-white/[0.08] bg-white/[0.05] pl-11 pr-12 py-3.5 text-sm text-white placeholder-zinc-600 outline-none transition-all focus:border-violet-500/50 focus:bg-white/[0.08] focus:ring-2 focus:ring-violet-500/15"
                 />
                 <button
                   type="button"
@@ -268,6 +262,7 @@ export default function LoginPage() {
             {/* Sign in button */}
             <button
               id="login-submit"
+              type="button"
               onClick={() => void handleLogin()}
               disabled={submitting}
               className="group relative flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-sm font-semibold text-white shadow-xl shadow-violet-500/30 transition-all hover:shadow-violet-500/50 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
@@ -282,8 +277,9 @@ export default function LoginPage() {
             {oidcUrl && (
               <button
                 id="login-oidc"
+                type="button"
                 onClick={() => router.push(oidcUrl)}
-                className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/8 bg-white/[0.04] text-sm font-medium text-zinc-400 transition hover:border-white/15 hover:bg-white/[0.07] hover:text-white"
+                className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.04] text-sm font-medium text-zinc-400 transition hover:border-white/[0.15] hover:bg-white/[0.07] hover:text-white"
               >
                 Sign in with SSO
               </button>

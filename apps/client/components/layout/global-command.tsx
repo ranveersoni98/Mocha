@@ -14,15 +14,14 @@ import {
 } from "@/components/ui/command";
 import {
   PiHouseDuotone,
-  PiPlusDuotone,
   PiUserCircleDuotone,
   PiGearSixDuotone,
   PiLightningDuotone,
-  PiFolderNotchDuotone,
   PiKanbanDuotone,
   PiFilesDuotone,
 } from "react-icons/pi";
 import { GoIssueOpened } from "react-icons/go";
+import { Plus } from "lucide-react";
 
 export function GlobalCommand({
   open,
@@ -64,7 +63,7 @@ export function GlobalCommand({
             onSelect={() => runCommand(() => router.push("/new"))}
             className="gap-3 group data-[selected=true]:bg-violet-500/10 data-[selected=true]:text-violet-400"
           >
-            <PiPlusDuotone className="h-4 w-4 text-zinc-500 group-data-[selected=true]:text-violet-400" />
+            <Plus className="h-4 w-4 text-zinc-500 group-data-[selected=true]:text-violet-400" strokeWidth={2.4} />
             <span>Create new issue</span>
             <CommandShortcut>⌘N</CommandShortcut>
           </CommandItem>

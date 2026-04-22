@@ -1,7 +1,7 @@
 "use client";
 
-import { PiPlusDuotone } from "react-icons/pi";
 import { GoIssueOpened } from "react-icons/go";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 import { PortalShell } from "@/components/portal/portal-shell";
 import { PortalTicketList } from "@/components/portal/portal-ticket-list";
@@ -38,7 +38,7 @@ export default function PortalPage() {
               <TooltipTrigger asChild>
                 <Link href="/portal/new">
                   <Button className="gap-2 rounded-full px-5 font-semibold">
-                    <PiPlusDuotone className="h-4 w-4" />
+                    <Plus className="h-4 w-4" strokeWidth={2.4} />
                     New issue
                   </Button>
                 </Link>

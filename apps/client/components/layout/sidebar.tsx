@@ -1,9 +1,8 @@
 "use client";
 
 import {
-  PiBellDuotone,
   PiCaretUpDown,
-  PiCoffeeDuotone,
+  PiBellDuotone,
   PiFilesDuotone,
   PiGearSixDuotone,
   PiGlobeDuotone,
@@ -11,12 +10,13 @@ import {
   PiSignOutDuotone,
   PiUserCircleDuotone,
   PiUserDuotone,
-  PiPlusDuotone,
 } from "react-icons/pi";
 import { GoIssueOpened } from "react-icons/go";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type * as React from "react";
+import { BrandMark } from "@/components/brand/brand-mark";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -48,6 +48,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSession, useUser } from "@/lib/store";
+import { useIssueComposer } from "@/components/providers/issue-composer-provider";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: PiHouseDuotone },
@@ -66,6 +67,7 @@ export function Sidebar({
   const user = useUser();
   const { loading } = useSession();
   const { isMobile } = useSidebar();
+  const { openComposer } = useIssueComposer();
 
   if (pathname.startsWith("/auth")) return null;
 
@@ -91,13 +93,11 @@ export function Sidebar({
                     size="lg"
                     className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                   >
-                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 shadow-md shadow-violet-500/30 text-white">
-                      <PiCoffeeDuotone className="size-4" />
-                    </div>
+                    <BrandMark size={32} showWordmark={false} />
                     <div className="grid flex-1 text-left text-sm leading-tight ml-1">
                       <span className="truncate font-semibold">Mocha</span>
                       <span className="truncate text-xs text-muted-foreground">
-                        Workspace
+                        Account workspace
                       </span>
                     </div>
                     <PiCaretUpDown className="ml-auto size-4 text-muted-foreground" />
@@ -113,9 +113,7 @@ export function Sidebar({
                     Workspaces
                   </DropdownMenuLabel>
                   <DropdownMenuItem className="gap-2 p-2">
-                    <div className="flex size-6 items-center justify-center rounded-md border bg-gradient-to-br from-violet-500/20 to-indigo-600/20 border-violet-500/30">
-                      <PiCoffeeDuotone className="size-4 shrink-0 text-violet-400" />
-                    </div>
+                    <BrandMark size={24} showWordmark={false} />
                     <span className="font-medium">Mocha</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -124,17 +122,15 @@ export function Sidebar({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
-                    onClick={() => {
-                      document.dispatchEvent(
-                        new KeyboardEvent("keydown", { key: "k", ctrlKey: true })
-                      );
-                    }}
-                    className="ml-1 h-8 w-8 shrink-0 inline-flex items-center justify-center rounded-lg border border-white/5 bg-white/[0.04] text-zinc-400 hover:bg-white/[0.08] hover:text-white transition-colors self-center"
+                    type="button"
+                    onClick={openComposer}
+                    aria-label="Create new issue"
+                    className="ml-2 inline-flex size-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.05] text-zinc-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] transition-all hover:border-violet-400/30 hover:bg-violet-500/10 hover:text-white active:scale-95"
                   >
-                    <PiPlusDuotone className="h-4 w-4" />
+                    <Plus className="h-4 w-4" strokeWidth={2.4} />
                   </button>
                 </TooltipTrigger>
-                <TooltipContent side="right">Open Actions (⌘K)</TooltipContent>
+                <TooltipContent side="right">New issue</TooltipContent>
               </Tooltip>
             </SidebarMenuItem>
           </SidebarMenu>

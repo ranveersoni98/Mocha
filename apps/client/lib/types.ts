@@ -44,6 +44,7 @@ export interface Ticket {
   id: string;
   Number?: number;
   title: string;
+  type?: string;
   priority?: string;
   status?: string;
   isComplete?: boolean;

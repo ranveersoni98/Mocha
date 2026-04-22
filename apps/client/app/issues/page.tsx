@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { PiMagnifyingGlassDuotone, PiPlusDuotone } from "react-icons/pi";
+import { PiMagnifyingGlassDuotone } from "react-icons/pi";
+import { Plus } from "lucide-react";
 import {
   GoIssueOpened,
   GoIssueClosed,
@@ -71,82 +72,86 @@ export default function IssuesPage() {
 
   return (
     <TooltipProvider>
-      <div className="flex flex-col gap-5 pb-10 max-w-6xl w-full">
-        {/* ── Header ── */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="space-y-0.5">
-            <h1 className="text-3xl font-bold tracking-tight text-white">
-              Issues
-            </h1>
-            <p className="text-sm text-zinc-500">
-              {isLoading ? "Loading…" : `${tickets.length} issue${tickets.length === 1 ? "" : "s"}`}
-            </p>
-          </div>
+      <div className="flex flex-col gap-6 pb-10">
+        <section className="rounded-[28px] border border-white/[0.08] bg-[#09090b] px-6 py-6 shadow-[0_28px_80px_rgba(0,0,0,0.35)]">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+            <div className="space-y-2">
+              <div className="inline-flex rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-zinc-500">
+                Issue queue
+              </div>
+              <div className="space-y-1">
+                <h1 className="text-3xl font-semibold tracking-tight text-white">
+                  Issues
+                </h1>
+                <p className="text-sm text-zinc-500">
+                  {isLoading
+                    ? "Loading…"
+                    : `${tickets.length} issue${tickets.length === 1 ? "" : "s"}`}
+                </p>
+              </div>
+            </div>
 
-          <div className="flex items-center gap-2">
-            {/* Filter pills */}
-            {(["all", "open", "closed"] as const).map((v) => (
-              <Tooltip key={v}>
+            <div className="flex flex-wrap items-center gap-2">
+              {(["all", "open", "closed"] as const).map((v) => (
+                <Tooltip key={v}>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={() => setFilter(v)}
+                      className={`flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold capitalize transition-all ${
+                        filter === v
+                          ? "bg-white text-black"
+                          : "border border-white/[0.08] bg-white/[0.03] text-zinc-400 hover:bg-white/[0.08] hover:text-white"
+                      }`}
+                    >
+                      {v === "open" && <GoIssueOpened className="h-3.5 w-3.5" />}
+                      {v === "closed" && <GoIssueClosed className="h-3.5 w-3.5" />}
+                      {v === "all" && <GoDotFill className="h-3 w-3" />}
+                      {v}
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>Show {v} issues</TooltipContent>
+                </Tooltip>
+              ))}
+
+              <Tooltip>
                 <TooltipTrigger asChild>
-                  <button
-                    onClick={() => setFilter(v)}
-                    className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold capitalize transition-all ${
-                      filter === v
-                        ? "bg-white text-black"
-                        : "bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-white"
-                    }`}
-                  >
-                    {v === "open" && <GoIssueOpened className="h-3.5 w-3.5" />}
-                    {v === "closed" && <GoIssueClosed className="h-3.5 w-3.5" />}
-                    {v === "all" && <GoDotFill className="h-3 w-3" />}
-                    {v}
-                  </button>
+                  <Link href="/new">
+                    <Button
+                      size="sm"
+                      className="h-9 gap-1.5 rounded-full px-4 font-semibold bg-white text-black hover:bg-zinc-200"
+                    >
+                      <Plus className="h-3.5 w-3.5" strokeWidth={2.4} />
+                      New issue
+                    </Button>
+                  </Link>
                 </TooltipTrigger>
-                <TooltipContent>Show {v} issues</TooltipContent>
+                <TooltipContent>Create a new issue</TooltipContent>
               </Tooltip>
-            ))}
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link href="/new">
-                  <Button
-                    size="sm"
-                    className="h-8 gap-1.5 rounded-full px-4 font-semibold bg-white text-black hover:bg-zinc-200"
-                  >
-                    <PiPlusDuotone className="h-3.5 w-3.5" />
-                    New
-                  </Button>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent>Create a new issue</TooltipContent>
-            </Tooltip>
+            </div>
           </div>
-        </div>
+        </section>
 
-        {/* ── Search ── */}
         <div className="relative">
-          <PiMagnifyingGlassDuotone className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-600 pointer-events-none" />
+          <PiMagnifyingGlassDuotone className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-600" />
           <Input
             id="issues-search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search title, ID, or assignee…"
-            className="h-11 pl-11 rounded-xl bg-white/[0.04] border-white/8 text-white placeholder-zinc-600 focus-visible:ring-1 focus-visible:ring-white/15"
+            className="h-12 rounded-2xl border-white/[0.08] bg-white/[0.04] pl-11 text-white placeholder-zinc-600 focus-visible:ring-1 focus-visible:ring-white/[0.15]"
           />
           {query && (
             <button
               onClick={() => setQuery("")}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-zinc-600 hover:text-white transition"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-zinc-600 transition hover:text-white"
             >
               Clear
             </button>
           )}
         </div>
 
-        {/* ── Table ── */}
-        <div className="rounded-2xl border border-white/5 bg-[#09090b] overflow-hidden">
-          {/* Column headers */}
-          <div className="hidden lg:grid lg:grid-cols-[2rem_minmax(0,1fr)_110px_90px_130px] items-center gap-4 border-b border-white/5 px-5 py-2.5">
+        <div className="overflow-hidden rounded-[28px] border border-white/[0.08] bg-[#09090b]">
+          <div className="hidden items-center gap-4 border-b border-white/[0.08] px-5 py-2.5 lg:grid lg:grid-cols-[2rem_minmax(0,1fr)_110px_90px_130px]">
             {["", "Title", "Priority", "Status", "Created"].map((h) => (
               <span
                 key={h}
@@ -181,7 +186,7 @@ export default function IssuesPage() {
                     <Link
                       key={ticket.id}
                       href={`/issue/${ticket.id}`}
-                      className="group grid gap-4 px-5 py-3.5 transition-colors hover:bg-white/[0.025] lg:grid-cols-[2rem_minmax(0,1fr)_110px_90px_130px] items-center"
+                      className="group grid items-center gap-4 px-5 py-4 transition-colors hover:bg-white/[0.03] lg:grid-cols-[2rem_minmax(0,1fr)_110px_90px_130px]"
                     >
                       {/* Type icon */}
                       <div className="hidden lg:flex items-center justify-center opacity-70 group-hover:opacity-100 transition">
@@ -190,7 +195,7 @@ export default function IssuesPage() {
 
                       {/* Title */}
                       <div className="min-w-0">
-                        <p className="truncate text-sm font-medium text-zinc-200 group-hover:text-white transition-colors">
+                        <p className="truncate text-sm font-medium text-zinc-200 transition-colors group-hover:text-white">
                           {ticket.title}
                         </p>
                         <p className="mt-0.5 text-[11px] text-zinc-600 flex items-center gap-1.5">

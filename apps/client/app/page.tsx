@@ -2,7 +2,6 @@
 
 import {
   PiArrowRightDuotone,
-  PiPlusDuotone,
 } from "react-icons/pi";
 import {
   GoIssueOpened,
@@ -11,6 +10,7 @@ import {
 } from "react-icons/go";
 import Link from "next/link";
 import { useMemo } from "react";
+import { Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -116,7 +116,7 @@ export default function DashboardPage() {
                       variant="outline"
                       className="h-11 px-6 rounded-full border-white/10 bg-white/5 hover:bg-white/10 text-white transition-colors gap-2 font-medium"
                     >
-                      <PiPlusDuotone className="h-4 w-4" />
+                      <Plus className="h-4 w-4" strokeWidth={2.4} />
                       New issue
                     </Button>
                   </Link>
@@ -269,7 +269,7 @@ export default function DashboardPage() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button className="w-full gap-2 rounded-xl h-11 font-medium bg-white text-black hover:bg-zinc-200">
-                    <PiPlusDuotone className="h-4 w-4" />
+                    <Plus className="h-4 w-4" strokeWidth={2.4} />
                     New feature flag
                   </Button>
                 </TooltipTrigger>

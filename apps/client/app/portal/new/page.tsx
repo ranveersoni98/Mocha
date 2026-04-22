@@ -34,12 +34,11 @@ export default function PortalNewIssuePage() {
     setStatus("Submitting...");
     try {
       const result = await api<{ success?: boolean; id?: string }>(
-        "/api/v1/ticket/create",
-        {
-          method: "POST",
-          auth: false,
-          json: {
-            name: user.name,
+          "/api/v1/ticket/create",
+          {
+            method: "POST",
+            json: {
+              name: user.name,
             title: subject,
             email: user.email,
             detail: description,
